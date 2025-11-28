@@ -86,6 +86,8 @@ def train(model, data_loader, optimizer, tokenizer, epoch, max_epoch, warmup_ste
             with torch.cuda.amp.autocast():
                 loss_ita, info_dict = model(image, text_input, idx=idx, text_idx=text_idx, epoch=epoch, max_epoch=max_epoch)
             grad_scaler.scale(loss_ita).backward()
+            if args.opt.lower() == "adahessian":
+                grad_scaler.unscale_(optimizer)
             grad_scaler.step(optimizer)
             grad_scaler.update()
         
