@@ -734,7 +734,7 @@ if __name__ == '__main__':
     if args.checkpoint_dir:
         for filename in os.listdir(args.checkpoint_dir):
             if filename.endswith("pth"):
-                args.checkpoint = filename
+                args.checkpoint = os.path.join(args.checkpoint_dir, filename)
                 main(args)
 
         print(f"\n\n current best checkpoint {current_best_checkpoint}")
