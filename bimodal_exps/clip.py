@@ -536,7 +536,7 @@ def main(args):
                 
                 global average_score, current_best_checkpoint
                 if np.average(metrics) > average_score:
-                    if os.path.exists(current_best_checkpoint):
+                    if not current_best_checkpoint and os.path.exists(current_best_checkpoint):
                         # os.remove(args.checkpoint)
                         print(f"Delete checkpoint {current_best_checkpoint}")
 
