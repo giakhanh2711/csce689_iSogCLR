@@ -39,6 +39,9 @@ from zeroshot_transfer.classes import CIFAR10_CLASSES, CIFAR100_CLASSES, IMAGENE
 from tqdm import tqdm
 
 
+average_score = float("-inf")
+current_best_checkpoint = None
+
 def train(model, data_loader, optimizer, tokenizer, epoch, max_epoch, warmup_steps, device, scheduler, grad_scaler, args):
     # train
     model.train()
@@ -510,18 +513,38 @@ def main(args):
             # score_test_i2t_flickr, score_test_t2i_flickr = evaluation(model_without_ddp, test_flickr_loader, tokenizer, device, args)
     
         if utils.is_main_process():  
-
+            
             if args.evaluate:
+                
+                metrics = []
+                
                 val_result_coco = itm_eval(score_val_i2t_coco, score_val_t2i_coco, val_coco_loader.dataset.txt2img, val_coco_loader.dataset.img2txt)  
                 print("coco val:", val_result_coco)
                 # test_result_coco = itm_eval(score_test_i2t_coco, score_test_t2i_coco, test_coco_loader.dataset.txt2img, test_coco_loader.dataset.img2txt)    
                 # print("coco test:", test_result_coco)
 
+                metrics.extend([val_result_coco['txt_r1'], val_result_coco['img_r1']])
+
                 if args.zs_dataset:
                     zeroshot_results = zeroshot_transfer(model_without_ddp, zeroshot_dataloader, args.zs_dataset, tokenizer, device)
                     print("zeroshot:", zeroshot_results)
+
+                    metrics.append(zeroshot_results['zeroshot_top1'])
+
                 else:
                     zeroshot_results = None
+                
+                global average_score
+                if np.average(metrics) > average_score:
+                    if os.path.exists(current_best_checkpoint):
+                        # os.remove(args.checkpoint)
+                        print(f"Delete checkpoint {current_best_checkpoint}")
+
+                    current_best_checkpoint = args.checkpoint
+                    print(f"Current best checkpoint on val: {current_best_checkpoint.split('/')[-1]}")
+                    average_score = np.average(metrics)
+                else:
+                    print(f"Delete checkpoint {args.checkpoint}")
 
                 # val_result_flickr = itm_eval(score_val_i2t_flickr, score_val_t2i_flickr, val_flickr_loader.dataset.txt2img, val_flickr_loader.dataset.img2txt)  
                 # print("flickr val:", val_result_flickr)
@@ -649,6 +672,7 @@ if __name__ == '__main__':
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
     parser.add_argument('--distributed', action='store_true')
     parser.add_argument('--no-distributed', dest='distributed', action='store_false')
+    parser.add_argument('--checkpoint_dir', default='', type=str)
 
     # output path
     parser.add_argument('--output_dir', default='./output/clip_test')  
@@ -707,4 +731,12 @@ if __name__ == '__main__':
 
     json.dump(args.__dict__, open(os.path.join(args.output_dir, 'args.json'), 'w'), indent=2) 
     
-    main(args)
+    if args.checkpoint_dir:
+        for filename in os.listdir(args.checkpoint_dir):
+            if filename.endswith("pth"):
+                args.checkpoint = filename
+                main(args)
+
+        print(f"\n\n current best checkpoint {current_best_checkpoint}")
+    else:
+        main(args)
