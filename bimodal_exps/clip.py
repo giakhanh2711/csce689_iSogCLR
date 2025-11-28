@@ -534,7 +534,7 @@ def main(args):
                 else:
                     zeroshot_results = None
                 
-                global average_score
+                global average_score, current_best_checkpoint
                 if np.average(metrics) > average_score:
                     if os.path.exists(current_best_checkpoint):
                         # os.remove(args.checkpoint)
