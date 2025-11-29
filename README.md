@@ -4,6 +4,7 @@
 | SogCLR |  14.38  |  10.73  | 24.54 | 16.55 |
 | iSogCLR new v2 (adamW opt)| 12.3 | 8.42 | 20.01 | 13.58|
 | SogCLR (Adafactor opt) | 13.08 | 10.49 | 25.11 | 16.23 |
+| iSogCLR new v1 (adamW opt) | | | |
 
 # iSogCLR PyTorch Implementation
 
