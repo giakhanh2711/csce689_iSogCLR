@@ -697,7 +697,8 @@ if __name__ == '__main__':
     parser.add_argument('--store_tau', action='store_true')
     parser.add_argument('--isogclr_temp_net', action='store_true')
     parser.add_argument('--alpha', default=1.0, type=float, help='for isogclr_denoise')
-
+    parser.add_argument('--N', default=None, type=int)
+    
     # set the fraction of data used for training
     parser.add_argument('--train_frac', default=1.0, type=float)
 
