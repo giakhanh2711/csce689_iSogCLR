@@ -511,6 +511,7 @@ class iSogCLR_New_v2_Loss(nn.Module):
         #Inputs:
         #   N is number of samples in training set
         
+        print(f"-- {self.__class__.__name__} with {N} --")
         super(iSogCLR_New_v2_Loss, self).__init__()
         self.world_size = world_size
         self.gamma = gamma
