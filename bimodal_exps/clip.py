@@ -439,7 +439,7 @@ def main(args):
                   world_size=args.world_size, ita_type=args.ita_type, sogclr_gamma=args.sogclr_gamma, rho_I=args.rho_I, rho_T=args.rho_T, tau_init=args.tau_init,
                   eta_init=args.eta_init, beta_u=args.beta_u, temp=args.temp, learnable_temp=args.learnable_temp,
                   vicreg_sim_coeff=args.vicreg_sim_coeff, vicreg_std_coeff=args.vicreg_std_coeff, personalized_tau=args.personalized_tau, 
-                  use_temp_net=args.isogclr_temp_net, alpha=args.alpha, distributed=args.distributed)
+                  use_temp_net=args.isogclr_temp_net, alpha=args.alpha, distributed=args.distributed, N=args.N)
     model = model.to(device)
 
     if args.evaluate or args.ita_type == 'isogclr_denoise':
