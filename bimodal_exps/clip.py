@@ -578,6 +578,7 @@ def main(args):
                 #     f.write(json.dumps(log_stats) + "\n") 
 
                 if zeroshot_results:
+                    zeroshot_results["checkpoint"] = args.checkpoint.split('/')[-1].rstrip(".pth")
                     with open(os.path.join(args.output_dir, f"zeroshot_{args.zs_dataset}_log.txt"), "a") as f:
                         f.write(json.dumps(zeroshot_results) + "\n")
 
@@ -622,7 +623,8 @@ def main(args):
 
     if utils.is_main_process():   
         with open(os.path.join(args.output_dir, "coco_log.txt"),"a") as f:
-            f.write("best epoch: %d"%best_epoch)             
+            # f.write("best epoch: %d"%best_epoch) 
+            f.write("epoch: %d"%args.checkpoint.split('/')[-1].rstrip(".pth"))                         
 
             
 if __name__ == '__main__':
