@@ -403,8 +403,9 @@ def main(args):
 
         assert 0
 
-    num_training = int(args.train_frac * len(train_dataset))
-    train_dataset = Subset(train_dataset, list(range(num_training)))
+    if not args.evaluate:
+        num_training = int(args.train_frac * len(train_dataset))
+        train_dataset = Subset(train_dataset, list(range(num_training)))
 
 
     if args.distributed:
