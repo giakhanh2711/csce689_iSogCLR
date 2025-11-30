@@ -376,13 +376,15 @@ def main(args):
     cudnn.benchmark = True
 
     #### Dataset #### 
-    print("Creating retrieval dataset")
-    train_dataset = create_train_dataset('re', args)
+    if not args.checkpoint and not args.checkpoint_dir:
+        print("Creating retrieval dataset")
+        train_dataset = create_train_dataset('re', args)
+        print("len of train_dataset:", len(train_dataset))
+
     # val_coco_dataset, test_coco_dataset = create_val_dataset('re', args, args.val_coco_file, args.coco_image_root, args.test_coco_file)
     val_coco_dataset = create_val_dataset('re', args, args.val_coco_file, args.coco_image_root, None)
     # val_flickr_dataset, test_flickr_dataset = create_val_dataset('re', args, args.val_flickr_file, args.flickr_image_root, args.test_flickr_file)
     # sbu_dataset = create_val_dataset('re', args, args.sbu_file, args.sbu_image_root)
-    print("len of train_dataset:", len(train_dataset))
     # print("len of coco val/test:", len(val_coco_dataset), len(test_coco_dataset))
     print("len of coco val:", len(val_coco_dataset))
     # print("len of flickr val/test:", len(val_flickr_dataset), len(test_flickr_dataset))
@@ -412,7 +414,8 @@ def main(args):
     else:
         samplers = [None, None, None]
 
-    train_loader = create_train_loader(train_dataset, samplers[0], args.batch_size_train, 2, None)
+    if not args.evaluate:
+        train_loader = create_train_loader(train_dataset, samplers[0], args.batch_size_train, 2, None)
 
     # val_coco_loader, test_coco_loader = create_val_loader([val_coco_dataset, test_coco_dataset], samplers[1:], 
     #                                                       [args.batch_size_test]*2, [8]*2, [None]*2)
@@ -698,7 +701,7 @@ if __name__ == '__main__':
     parser.add_argument('--isogclr_temp_net', action='store_true')
     parser.add_argument('--alpha', default=1.0, type=float, help='for isogclr_denoise')
     parser.add_argument('--N', default=None, type=int)
-    
+
     # set the fraction of data used for training
     parser.add_argument('--train_frac', default=1.0, type=float)
 
