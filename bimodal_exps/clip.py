@@ -375,6 +375,9 @@ def main(args):
     random.seed(seed)
     cudnn.benchmark = True
 
+    if not args.evaluate and args.ita_type in ['isogclr_new', 'isogclr_new_v2', 'isogclr_new_v1']:
+        assert args.N, "N is not None"
+
     #### Dataset #### 
     if not args.checkpoint and not args.checkpoint_dir:
         print("Creating retrieval dataset")

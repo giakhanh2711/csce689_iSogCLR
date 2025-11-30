@@ -91,17 +91,14 @@ class CLIP(nn.Module):
         #     self.criterion = SogCLR_DRO_Loss(world_size=world_size, gamma=sogclr_gamma, rho_init=rho_init, tau_init=tau_init, bsz=bsz,
         #                                      eta_init=eta_init, beta_u=beta_u, enable_surrogate=enable_surrogate)
         elif self.ita_type == 'isogclr_new_v2':
-            assert N, "N is not None"
             self.criterion = iSogCLR_New_v2_Loss(N=N, world_size=world_size, gamma=sogclr_gamma, rho_init=rho_I, tau_init=tau_init, bsz=bsz,
                                                  eta_init=eta_init, beta_u=beta_u)
         elif self.ita_type == 'isogclr_new_v1':
-            assert N, "N is not None"
             self.criterion = iSogCLR_New_v1_Loss(N=N, world_size=world_size, gamma=sogclr_gamma, rho_init=rho_I, bsz=bsz)
         elif self.ita_type == 'onlineclr':
             self.criterion = onlineCLR_Loss(world_size=world_size, temperature=self.temp, gamma=sogclr_gamma)
 
         elif self.ita_type == 'isogclr_new':
-            assert N, "N is not None"
             self.criterion = iSogCLR_New_Loss(world_size=world_size, gamma=sogclr_gamma, rho_I=rho_I, rho_T=rho_T, tau_init=tau_init, bsz=bsz,
                                               use_temp_net=use_temp_net, feature_dim=embed_dim)
         else:
