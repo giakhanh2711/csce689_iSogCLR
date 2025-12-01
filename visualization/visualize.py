@@ -64,7 +64,6 @@ def plot_mean_recall_val(val_file):
     epochs = [x[0] for x in data]
     mean_recall1 = [(x[1]["val_txt_r1"] + x[1]["val_img_r1"]) / 2 for x in data]
 
-    print(data)
     plt.plot(epochs, mean_recall1)
     plt.xlabel("Epoch")
     plt.ylabel("MSCOCO Recall")
