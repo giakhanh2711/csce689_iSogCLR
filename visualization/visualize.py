@@ -105,8 +105,9 @@ def plot_curves_mean_recall_val(output_dir):
     ylabel = f"{datasetname} Recall"
 
     for filename in output_dir.iterdir():
-        label = filename.stem.split("log_")[-1]
-        reformat_val_file(filename)
-        plot_mean_recall_val(filename, label=label, title=title, ylabel=ylabel)
+        if filename.suffix == ".txt":
+            label = filename.stem.split("log_")[-1]
+            reformat_val_file(filename)
+            plot_mean_recall_val(filename, label=label, title=title, ylabel=ylabel)
 
 
