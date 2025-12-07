@@ -184,7 +184,7 @@ def create_zeroshot_dataloader(dataset_name, data_folder, image_size):
     else:
         dataset = datasets.ImageFolder(root=data_folder, transform=val_transform)
 
-    data_loader = torch.utils.data.DataLoader(dataset, batch_size=512, shuffle=False,
+    data_loader = torch.utils.data.DataLoader(dataset, batch_size=2048, shuffle=False,
                                               num_workers=2, pin_memory=True)
 
     data_loader.num_samples = len(dataset)
