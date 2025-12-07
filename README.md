@@ -1,11 +1,3 @@
-| Method | MSCOCO TR@1 | MSCOCO IR@1 | ImageNet ACC@1 | Average |
-|:----------:|:--------:|:--------:|:--------:|:--------:|
-| CLIP | 12.0 | 9.32 | 21.35 | 14.22 |
-| SogCLR |  14.38  |  10.73  | 24.54 | 16.55 |
-| iSogCLR new v2 (adamW opt)| 12.3 | 8.42 | 20.01 | 13.58|
-| SogCLR (Adafactor opt) | 13.08 | 10.49 | 25.11 | 16.23 |
-| iSogCLR new v1 (adamW opt) | | | |
-
 # iSogCLR PyTorch Implementation
 
 In this repo, we show how to train a self-supervised model by using Global Contrastive Loss (GCL) on a widely used bimodal image-text dataset [CC3M](https://ai.google.com/research/ConceptualCaptions/download).
